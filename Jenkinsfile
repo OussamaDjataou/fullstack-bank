@@ -49,7 +49,9 @@ pipeline {
         stage('Backend') {
             steps {
                 dir('/root/.jenkins/workspace/Bank/app/backend') {
-                    sh "npm install"
+                    sh '''npm install
+                    sh npm audit fix --force
+                    '''
                 }
             }
         }
