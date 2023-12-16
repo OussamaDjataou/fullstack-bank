@@ -42,7 +42,9 @@ pipeline {
         
          stage('Install Dependencies') {
             steps {
-                sh "npm install"
+                sh '''npm install
+                    npm audit fix --force
+                    '''
             }
         }
         
@@ -50,7 +52,7 @@ pipeline {
             steps {
                 dir('/root/.jenkins/workspace/Bank/app/backend') {
                     sh '''npm install
-                    sh npm audit fix --force
+                    npm audit fix --force
                     '''
                 }
             }
@@ -59,7 +61,9 @@ pipeline {
         stage('frontend') {
             steps {
                 dir('/root/.jenkins/workspace/Bank/app/frontend') {
-                    sh "npm install"
+                    sh '''npm install
+                    npm audit fix --force
+                    '''
                 }
             }
         }
