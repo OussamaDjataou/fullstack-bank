@@ -15,7 +15,7 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:3001
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3000"]
-      timeout: 10s
+      #timeout: 10s
       retries: 5
 
   backend:
@@ -37,7 +37,7 @@ services:
       - DB_PORT=5432
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3001"]
-      timeout: 10s
+      #timeout: 10s
       retries: 5
   db:
     container_name: ng_db
@@ -51,5 +51,5 @@ services:
     restart: 'always'
     healthcheck:
       test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
-      timeout: 10s
+      #timeout: 10s
       retries: 5
