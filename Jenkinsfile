@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/jaiswaladi246/fullstack-bank.git'
+                git branch: 'main', url: 'https://github.com/OussamaDjataou/fullstack-bank.git'
             }
         }
         
@@ -25,11 +25,7 @@ pipeline {
             }
         }
         
-        stage('TRIVY FS SCAN') {
-            steps {
-                sh "trivy fs ."
-            }
-        }
+        
         
         stage('SONARQUBE ANALYSIS') {
             steps {
@@ -51,8 +47,16 @@ pipeline {
         stage('Backend') {
             steps {
                 dir('/var/lib/jenkins/workspace/Pipeline/app/backend') {
-                    sh '''npm install
-                    npm audit fix --force
+                    sh '''docker build -t backend .
+                    '''
+                }
+            }
+        }
+        stage('Backend scan') {
+            steps {
+                dir('/var/lib/jenkins/workspace/Pipeline/app/backend') {
+                    sh '''trivy image backend > scan1.txt
+                    cat scan1.txt
                     '''
                 }
             }
@@ -61,8 +65,18 @@ pipeline {
         stage('frontend') {
             steps {
                 dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
-                    sh '''npm install
-                    npm audit fix --force
+                    sh '''docker build -t frontend .
+                    '''
+                }
+            }
+        }
+
+
+        stage('Front scan') {
+            steps {
+                dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
+                    sh '''trivy image frontend > scan2.txt
+                    cat scan2.txt
                     '''
                 }
             }
@@ -70,7 +84,8 @@ pipeline {
         
         stage('Deploy to Conatiner') {
             steps {
-                sh "npm run compose:up -d"
+                sh '''docker-compose up -d
+                '''
             }
         }
     }
