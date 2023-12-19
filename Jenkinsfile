@@ -86,7 +86,7 @@ pipeline {
             steps {
                 dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
                     sh ''' docker login -u djataououssama -p Owaxadjdada12*
-                    docker tag frontend 'djataououssama/testjenkins:1.0 
+                    docker tag frontend djataououssama/testjenkins:1.0 
                       docker push djataououssama/testjenkins:1.0
                          '''
                     
