@@ -84,8 +84,12 @@ pipeline {
         
         stage('Deploy to Conatiner') {
             steps {
-                dir('/var/lib/jenkins/workspace/Pipeline/app') {
-                     sh '''docker-compose up -d'''
+                dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
+                    withDockerRegistry(credentialsId: 'docker_id', url: 'https://hub.docker.com/repository/docker/djataououssama/testjenkins') {
+                         sh '''docker tag frontend 'djataououssama/testjenkins:1.0 
+                          docker push djataououssama/testjenkins:1.0
+                             '''
+                    } 
                 }
             }
         }
