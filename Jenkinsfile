@@ -15,14 +15,13 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/OussamaDjataou/fullstack-bank.git'
+                GitCheckout()
             }
         }
         
         stage('OWASP FS SCAN') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./app/backend --disableYarnAudit --disableNodeAudit', odcInstallation: 'DC'
-                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                dependencyCheck()
             }
         }
         
@@ -30,69 +29,46 @@ pipeline {
         
         stage('SONARQUBE ANALYSIS') {
             steps {
-                withSonarQubeEnv('sonar') {
-                    //sh " $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Bank -Dsonar.projectKey=Bank "
                 SonarAnalysis()
-                }
+                
             }
         }
         
         
          stage('Install Dependencies') {
             steps {
-                sh '''npm install
-                    npm audit fix --force
-                    '''
+                NpmDependenciesInstall()
             }
         }
         
         stage('Backend') {
             steps {
-                dir('/var/lib/jenkins/workspace/Pipeline/app/backend') {
-                    sh '''docker build -t backend .
-                    '''
-                }
+                BackendContainerBuild()
             }
         }
         stage('Backend scan') {
             steps {
-                dir('/var/lib/jenkins/workspace/Pipeline/app/backend') {
-                    sh '''trivy image backend > scan1.txt
-                    cat scan1.txt
-                    '''
+                BackendImageScan()
                 }
             }
         }
         
         stage('frontend') {
             steps {
-                dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
-                    sh '''docker build -t frontend .
-                    '''
-                }
+                FrontendContainerBuild()
             }
         }
 
 
         stage('Front scan') {
             steps {
-                dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
-                    sh '''trivy image frontend > scan2.txt
-                    cat scan2.txt
-                    '''
-                }
+                FrontendImageScan()
             }
         }
         
         stage('Deploy to Conatiner') {
             steps {
-                dir('/var/lib/jenkins/workspace/Pipeline/app/frontend') {
-                    sh ''' docker login -u djataououssama -p Owaxadjdada12*
-                    docker tag frontend djataououssama/testjenkins:1.0 
-                      docker push djataououssama/testjenkins:1.0
-                         '''
-                    
-                }
+                Deployment()
             }
         }
     }
