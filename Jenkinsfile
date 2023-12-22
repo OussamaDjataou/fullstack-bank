@@ -21,7 +21,7 @@ pipeline {
         
         stage('OWASP FS SCAN') {
             steps {
-                dependencyCheck()
+                DependencyCheck()
             }
         }
         
@@ -46,7 +46,7 @@ pipeline {
                 BackendContainerBuild()
             }
         }
-        
+
         stage('Backend scan') {
             steps {
                 BackendImageScan()
