@@ -46,12 +46,13 @@ pipeline {
                 BackendContainerBuild()
             }
         }
+        
         stage('Backend scan') {
             steps {
                 BackendImageScan()
                 }
-            }
         }
+        
         
         stage('frontend') {
             steps {
@@ -71,5 +72,5 @@ pipeline {
                 Deployment()
             }
         }
-    
+    }
 }
