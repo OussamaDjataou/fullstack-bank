@@ -41,7 +41,7 @@ services:
       retries: 10
   db:
     container_name: ng_db1
-    image: postgres:15.1
+    image: postgres
     platform: linux/x86_64
     ports:
       - 3003:5432

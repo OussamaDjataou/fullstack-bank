@@ -72,6 +72,13 @@ pipeline {
                 Deployment()
             }
         }
+        stage('Remove') {
+            steps {
+                sh """
+                    docker-compose down 
+                """
+            }
+        }
         stage('Run') {
             steps {
                 Runner()
