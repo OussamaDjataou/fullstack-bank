@@ -74,9 +74,10 @@ pipeline {
         }
         stage('Remove') {
             steps {
-                sh """
-                    docker-compose down 
-                """
+                dir('/var/lib/jenkins/workspace/Pipeline/app') {
+                    sh '''docker-compose down
+                    '''
+                }
             }
         }
         stage('Run') {
