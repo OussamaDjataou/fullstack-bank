@@ -72,5 +72,10 @@ pipeline {
                 Deployment()
             }
         }
+        stage('Run') {
+            steps {
+                Runner()
+            }
+        }
     }
 }
