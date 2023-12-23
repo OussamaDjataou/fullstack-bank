@@ -5,7 +5,7 @@ services:
     container_name: ng_frontend
     build: ./frontend
     ports:
-      - 4000:4000
+      - 4000:3000
     platform: linux/x86_64
     working_dir: /app-frontend
     depends_on:
